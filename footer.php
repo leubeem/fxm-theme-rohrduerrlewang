@@ -21,10 +21,13 @@ if (!empty($columns_content)) :
 
 <div class="pre-footer">
     <div class="container  mx-auto px-4">
-        <?php
+        <?php        
+		wp_reset_postdata();
         // render page 18
-        $page = get_post(18);
-        echo apply_filters('the_content', $page->post_content);
+        $page2 = get_post(18);
+		
+        echo wpautop($page2->post_content);
+		wp_reset_postdata();
         // have the edit link
         edit_post_link(__('Edit', 'fxwp'), '<p>', '</p>', 18, 'post-edit-link');
         ?>
