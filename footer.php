@@ -21,16 +21,64 @@ if (!empty($columns_content)) :
 
 <div class="pre-footer">
     <div class="container  mx-auto px-4">
-        <?php        
-		wp_reset_postdata();
-        // render page 18
-        $page2 = get_post(18);
-		
-        echo wpautop($page2->post_content);
-		wp_reset_postdata();
+        <?php
+        wp_reset_postdata();
+        $my_postid = 18;
+        $content_post = get_post($my_postid);
+        $content = $content_post->post_content;
+        echo $content;
+
+        wp_reset_postdata();
         // have the edit link
         edit_post_link(__('Edit', 'fxwp'), '<p>', '</p>', 18, 'post-edit-link');
         ?>
+        <style>
+
+            div.prose {
+                max-width: 100% !important;
+            }
+            .wp-block-spacer {
+                clear: both;
+            }
+            body .is-layout-flex {
+                display: flex;
+            }
+            .wp-block-columns {
+                flex-wrap: nowrap !important;
+            }
+            .wp-block-columns {
+                align-items: normal !important;
+                box-sizing: border-box;
+            }
+            .wp-block-columns:not(.is-not-stacked-on-mobile) > .wp-block-column {
+                flex-basis: 0;
+                flex-grow: 1;
+            }
+            body .is-layout-flex > * {
+                margin: 0;
+            }
+            .wp-block-column {
+                min-width: 0;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+            .wp-block-columns:not(.is-not-stacked-on-mobile) > .wp-block-column {
+                flex-basis: 0;
+                flex-grow: 1;
+            }
+            .has-text-align-center {
+                text-align: center;
+            }
+            .has-text-align-left {
+                text-align: left;
+            }
+            .wp-block-spacer {
+                clear: both;
+            }
+            :where(.wp-block-columns) {
+                margin-bottom: 1.75em;
+            }
+        </style>
     </div>
 </div>
 

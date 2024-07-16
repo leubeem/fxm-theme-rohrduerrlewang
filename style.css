@@ -267,3 +267,7 @@ footer .footer-menu li:last-child {
 {
     transform: scale3d(1.05, 1.05, 1);
 }
+
+.site-title {
+    @apply max-lg:hidden;
+}
