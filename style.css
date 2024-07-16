@@ -69,7 +69,7 @@ body {
 }
 
 .pre-header {
-    @apply max-m"d:hidden;
+    @apply max-md:hidden;
 }
 
 footer {
@@ -266,4 +266,8 @@ footer .footer-menu li:last-child {
 .special-block-anim:hover
 {
     transform: scale3d(1.05, 1.05, 1);
+}
+
+.site-title {
+    @apply max-lg:hidden;
 }
