@@ -72,6 +72,9 @@ if (!empty($columns_content)) :
             .has-text-align-left {
                 text-align: left;
             }
+            .has-text-align-right {
+                text-align: right;
+            }
             .wp-block-spacer {
                 clear: both;
             }
