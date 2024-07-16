@@ -271,3 +271,7 @@ footer .footer-menu li:last-child {
 .site-title {
     @apply max-lg:hidden;
 }
+
+#menu-footer a {
+    color: #000;
+}
