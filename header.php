@@ -42,35 +42,32 @@
 </div>
 	
 <header class="header px-6 py-4">
-	
-
-	
     <div class="container mx-auto flex items-center justify-between">
         <a href="<?php echo esc_url(home_url('/')); ?>" class="text-xl font-semibold flex items-center gap-3">
             <img src="<?php echo wp_get_attachment_url(get_option("fxwp_favicon")); ?> " alt="Logo"
                  class="h-8 w-auto sm:h-10">
-            <div class="hidden sm:block">
+            <div class="hidden xl:block site-title">
                 <?php
-//                $site_title=wordwrap(bloginfo('name'), 27, "<br />\n&shy;");
-$site_title = get_bloginfo('name'); // Use get_bloginfo to get the title without echoing it
+                $site_title = get_bloginfo('name'); // Use get_bloginfo to get the title without echoing it
+                // $site_title=wordwrap(bloginfo('name'), 27, "<br />\n&shy;");
 
-    // Find the position of the first space
-    $firstSpacePosition = strpos($site_title, ' ');
-    
-    // If there's a first space, find the position of the second space
-    if ($firstSpacePosition !== false) {
-        $secondSpacePosition = strpos($site_title, ' ', $firstSpacePosition + 1);
-        if ($secondSpacePosition !== false) {
-            $site_title = substr_replace($site_title, "<br>", $secondSpacePosition, 1);
-        }
-    }
+                // Find the position of the first space
+                $firstSpacePosition = strpos($site_title, ' ');
 
-    echo $site_title;
+                // If there's a first space, find the position of the second space
+                if ($firstSpacePosition !== false) {
+                    $secondSpacePosition = strpos($site_title, ' ', $firstSpacePosition + 1);
+                    if ($secondSpacePosition !== false) {
+                        $site_title = substr_replace($site_title, "<br>", $secondSpacePosition, 1);
+                    }
+                }
+
+                echo $site_title;
                 ?>
             </div>
         </a>
 
-        <div class="sm:hidden">
+        <div class="md:hidden">
             <button id="menu-button" class="h-8 w-8 fill-current">
                 <svg viewBox="0 0 20 20">
                     <path fill-rule="evenodd"
@@ -80,7 +77,7 @@ $site_title = get_bloginfo('name'); // Use get_bloginfo to get the title without
             </button>
         </div>
 
-        <nav id="main-nav" class="hidden sm:block">
+        <nav id="main-nav" class="hidden md:block">
             <?php
             wp_nav_menu(array(
                 'theme_location' => 'header-menu',
@@ -91,7 +88,7 @@ $site_title = get_bloginfo('name'); // Use get_bloginfo to get the title without
         </nav>
     </div>
 
-    <nav id="mobile-nav" class="hidden sm:hidden mt-4">
+    <nav id="mobile-nav" class="hidden md:hidden mt-4">
         <?php
         wp_nav_menu(array(
             'theme_location' => 'header-menu',
