@@ -42,10 +42,10 @@
 </div>
 	
 <header class="header px-6 py-4">
-    <div class="container mx-auto flex items-center justify-between">
+    <div class="container lg:mx-auto flex items-center justify-between">
         <a href="<?php echo esc_url(home_url('/')); ?>" class="text-xl font-semibold flex items-center gap-3">
             <img src="<?php echo wp_get_attachment_url(get_option("fxwp_favicon")); ?> " alt="Logo"
-                 class="h-8 w-auto sm:h-10">
+                 class="h-8 w-auto sm:h-10 md:max-lg:hidden">
             <div class="hidden xl:block site-title">
                 <?php
                 $site_title = get_bloginfo('name'); // Use get_bloginfo to get the title without echoing it
