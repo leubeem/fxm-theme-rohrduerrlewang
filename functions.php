@@ -97,8 +97,6 @@ function create_kirchengruppen_role() {
             'delete_posts',
             'delete_published_pages',
             'delete_published_posts',
-            'publish_posts',
-            'publish_pages',
             // Customizer capabilities
             'customize',
             'edit_theme_options',
