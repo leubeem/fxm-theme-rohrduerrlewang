@@ -101,10 +101,7 @@ function update_kirchengruppen_capabilities() {
         'delete_published_posts',
         // Customizer capabilities
         'customize',
-        'edit_theme_options',
-        // Remove the primary CF7 capability
-        'wpcf7_manage_contact_forms',
-        'wpcf7_manage_integration'
+        'edit_theme_options'
     );
 
     // Remove each capability from the role.
@@ -123,6 +120,14 @@ function hide_cf7_menu_for_kirchengruppen() {
     }
 }
 add_action('admin_menu', 'hide_cf7_menu_for_kirchengruppen', 999);
+
+// Tell cf7 who can edit forms
+if (!defined('WPCF7_ADMIN_READ_CAPABILITY')) {
+    define('WPCF7_ADMIN_READ_CAPABILITY', 'customize');
+}
+if (!defined('WPCF7_ADMIN_READ_WRITE_CAPABILITY')) {
+    define('WPCF7_ADMIN_READ_WRITE_CAPABILITY', 'customize');
+}
 
 
 // Restrict editing to own pages and prevent deletion
