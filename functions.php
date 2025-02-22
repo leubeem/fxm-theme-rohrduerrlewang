@@ -103,6 +103,7 @@ function update_kirchengruppen_capabilities() {
         'customize',
         'edit_theme_options'
     );
+    //CF7 caps are restricted via wp-config.php defines
 
     // Remove each capability from the role.
     foreach ($remove_caps as $cap) {
@@ -120,15 +121,6 @@ function hide_cf7_menu_for_kirchengruppen() {
     }
 }
 add_action('admin_menu', 'hide_cf7_menu_for_kirchengruppen', 999);
-
-// Tell cf7 who can edit forms
-if (!defined('WPCF7_ADMIN_READ_CAPABILITY')) {
-    define('WPCF7_ADMIN_READ_CAPABILITY', 'customize');
-}
-if (!defined('WPCF7_ADMIN_READ_WRITE_CAPABILITY')) {
-    define('WPCF7_ADMIN_READ_WRITE_CAPABILITY', 'customize');
-}
-
 
 // Restrict editing to own pages and prevent deletion
 function restrict_page_editing_and_deletion($allcaps, $cap, $args) {
