@@ -79,46 +79,53 @@ function breadcrumb() {
 }
 
 
-function create_kirchengruppen_role() {
-    // Check if the role already exists
-    if (!get_role('kirchengruppen')) {
-        // Clone the editor role
+function update_kirchengruppen_capabilities() {
+    // Try to get the role, whether it exists or not.
+    $role = get_role('kirchengruppen');
+
+    // If the role doesn't exist, clone it from the editor role.
+    if (!$role) {
         $editor_role = get_role('editor');
-        $capabilities = $editor_role->capabilities;
+        $role = add_role('kirchengruppen', 'Kirchengruppen', $editor_role->capabilities);
+    }
 
+    // List of capabilities to remove.
+    $remove_caps = array(
+        'edit_others_pages',
+        'edit_others_posts',
+        'delete_others_pages',
+        'delete_others_posts',
+        'delete_pages',
+        'delete_posts',
+        'delete_published_pages',
+        'delete_published_posts',
+        // Customizer capabilities
+        'customize',
+        'edit_theme_options',
+        // Contact Form 7 capabilities
+        'wpcf7_edit_contact_forms',
+        'wpcf7_read_contact_forms',
+        'wpcf7_delete_contact_forms',
+        'wpcf7_manage_integration'
+    );
 
-	// Remove capabilities that allow editing others' posts and deleting any pages
-        $remove_caps = array(
-            'edit_others_pages',
-            'edit_others_posts',
-            'delete_others_pages',
-            'delete_others_posts',
-            'delete_pages',
-            'delete_posts',
-            'delete_published_pages',
-            'delete_published_posts',
-            // Customizer capabilities
-            'customize',
-            'edit_theme_options',
-            // Contact Form 7 capabilities
-            'wpcf7_edit_contact_forms',
-            'wpcf7_read_contact_forms',
-            'wpcf7_delete_contact_forms',
-	    'wpcf7_manage_integration'
-        );
-
-        foreach ($remove_caps as $cap) {
-            if (isset($capabilities[$cap])) {
-                unset($capabilities[$cap]);
-            }
-        }
-
-
-        // Add the new role
-        add_role('kirchengruppen', 'Kirchengruppen', $capabilities);
+    // Remove each capability from the role.
+    foreach ($remove_caps as $cap) {
+        $role->remove_cap($cap);
     }
 }
-add_action('init', 'create_kirchengruppen_role');
+add_action('admin_init', 'update_kirchengruppen_capabilities');
+
+// Hide the Contact Form 7 menu for users with the kirchengruppen role
+function hide_cf7_menu_for_kirchengruppen() {
+    // Check if the current user has the kirchengruppen role.
+    $user = wp_get_current_user();
+    if ( in_array( 'kirchengruppen', (array) $user->roles ) ) {
+        remove_menu_page('wpcf7');
+    }
+}
+add_action('admin_menu', 'hide_cf7_menu_for_kirchengruppen', 999);
+
 
 // Restrict editing to own pages and prevent deletion
 function restrict_page_editing_and_deletion($allcaps, $cap, $args) {
