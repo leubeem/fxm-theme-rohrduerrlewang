@@ -102,10 +102,8 @@ function update_kirchengruppen_capabilities() {
         // Customizer capabilities
         'customize',
         'edit_theme_options',
-        // Contact Form 7 capabilities
-        'wpcf7_edit_contact_forms',
-        'wpcf7_read_contact_forms',
-        'wpcf7_delete_contact_forms',
+        // Remove the primary CF7 capability
+        'wpcf7_manage_contact_forms',
         'wpcf7_manage_integration'
     );
 
