@@ -18,29 +18,25 @@ get_header(); ?>
 
 
 <?php
-if (isset($_GET['s']) && !empty($_GET['s'])) {
-    $args = array(
-        's' => $_GET['s'], // Add search query
-        'post_type' => 'page',
-        'posts_per_page' => -1,
-    );
+$search_query = new WP_Query(array(
+    's'              => sanitize_text_field(wp_unslash($_GET['s'])),
+    'post_type'      => array('page', 'post'),
+    'posts_per_page' => -1,
+));
 
-    $pages_query = new WP_Query($args);
-
-    if ($pages_query->have_posts()) {
-        while ($pages_query->have_posts()) {
-            $pages_query->the_post();
-            echo "<a class=result href='".get_permalink(get_the_ID())."'>";
-            the_title('<h2 class="text-lg font-bold">', '</h2>');
-            the_excerpt();
-            echo "</a>";
-        }
-    } else {
-        echo '<br><br>Keine Suchergebnisse gefunden.<br>';
+if ($search_query->have_posts()) {
+    while ($search_query->have_posts()) {
+        $search_query->the_post();
+        echo "<a class='result' href='" . esc_url(get_permalink()) . "'>";
+        the_title('<h2 class="text-lg font-bold">', '</h2>');
+        echo '<p>' . esc_html(wp_trim_words(get_the_excerpt(), 30)) . '</p>';
+        echo "</a>";
     }
-
-    wp_reset_postdata();
+} else {
+    echo '<br><br>Keine Suchergebnisse gefunden.<br>';
 }
+
+wp_reset_postdata();
 ?>
 
 
@@ -102,7 +98,9 @@ if (isset($_GET['s']) && !empty($_GET['s'])) {
                     echo "<h1 class=' post-title    '>" . get_the_title() . "</h1>";
                 endif;
                 get_template_part('template-parts/content', get_post_type());
-                the_posts_navigation();
+                if (is_home() || is_archive()) :
+                    the_posts_navigation();
+                endif;
 
             else :
 

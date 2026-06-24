@@ -1,7 +1,25 @@
 <?php
+
+// Theme setup: title tag, logo, thumbnails, translations, html5 markup
+function fxwp_theme_setup()
+{
+    load_theme_textdomain('fxwp', get_template_directory() . '/languages');
+    add_theme_support('title-tag');
+    add_theme_support('post-thumbnails');
+    add_theme_support('automatic-feed-links');
+    add_theme_support('responsive-embeds');
+    add_theme_support('custom-logo');
+    add_theme_support('html5', array(
+        'search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script',
+    ));
+}
+add_action('after_setup_theme', 'fxwp_theme_setup');
+
 function fxwp_theme_styles()
 {
-    wp_enqueue_style('fxwp_theme_style', str_replace('style.css', 'style.min.css', get_stylesheet_uri()));
+    $style_path = get_theme_file_path('style.min.css');
+    $version = file_exists($style_path) ? filemtime($style_path) : '1.0';
+    wp_enqueue_style('fxwp_theme_style', get_theme_file_uri('style.min.css'), array(), $version);
 }
 
 add_action('wp_enqueue_scripts', 'fxwp_theme_styles');
@@ -24,9 +42,22 @@ add_filter('comments_open', '__return_false', 20, 2);
 add_filter('pings_open', '__return_false', 20, 2);
 
 function fxwp_custom_theme_customizer( $wp_customize ) {
+    // Header logo (stored as an option so get_option('fxwp_favicon') keeps working)
+    $wp_customize->add_setting( 'fxwp_favicon', array(
+        'default'           => '',
+        'type'              => 'option',
+        'sanitize_callback' => 'absint',
+    ) );
+
+    $wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'fxwp_favicon', array(
+        'label'     => __( 'Header logo', 'fxwp' ),
+        'section'   => 'title_tagline',
+        'mime_type' => 'image',
+    ) ) );
+
     // Add a new section
     $wp_customize->add_section( 'fxwp_custom_section', array(
-        'title'    => __( 'Custom Section', 'fxwp-custom-theme' ),
+        'title'    => __( 'Custom Section', 'fxwp' ),
         'priority' => 160,
     ) );
 
@@ -38,11 +69,11 @@ function fxwp_custom_theme_customizer( $wp_customize ) {
         ) );
 
         $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'fxwp_custom_section_column_' . $i, array(
-            'label'       => __( 'Column ' . $i, 'fxwp-custom-theme' ),
+            'label'       => sprintf( __( 'Column %d', 'fxwp' ), $i ),
             'section'     => 'fxwp_custom_section',
             'settings'    => 'fxwp_custom_section_column_' . $i,
             'type'        => 'textarea',
-            'description' => __( 'Column ' . $i . ' content.', 'fxwp-custom-theme' ),
+            'description' => sprintf( __( 'Column %d content.', 'fxwp' ), $i ),
         ) ) );
     }
 }
@@ -67,12 +98,12 @@ function breadcrumb() {
     if ($parent_ids) {
         $parent_ids = array_reverse($parent_ids);
         foreach ($parent_ids as $parent_id) {
-            $breadcrumb .= '<a href="' . esc_url(get_permalink($parent_id)) . '">' . get_the_title($parent_id) . '</a>' . $separator;
+            $breadcrumb .= '<a href="' . esc_url(get_permalink($parent_id)) . '">' . esc_html(get_the_title($parent_id)) . '</a>' . $separator;
         }
     }
 
     // Add the current page/post
-    $breadcrumb .= '<span class="current">' . get_the_title($post_id) . '</span>';
+    $breadcrumb .= '<span class="current">' . esc_html(get_the_title($post_id)) . '</span>';
 
     // Return the breadcrumb HTML
     echo '<div class="breadcrumb">' . $breadcrumb . '</div>';
@@ -135,7 +166,11 @@ function restrict_page_editing_and_deletion($allcaps, $cap, $args) {
     $post_id = $args[2];
     $post = get_post($post_id);
 
-    if ($allcaps['kirchengruppen']) {
+    if (!$post) {
+        return $allcaps;
+    }
+
+    if (!empty($allcaps['kirchengruppen'])) {
         // Allow editing only own pages
         if ($cap[0] === 'edit_page' && $post->post_author != get_current_user_id()) {
             $allcaps[$cap[0]] = false;

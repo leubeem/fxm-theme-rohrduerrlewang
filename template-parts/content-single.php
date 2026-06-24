@@ -1,1 +1,5 @@
-Ich bin irgendwas aber einzeln
+<div class="prose">
+    <?php
+    the_content();
+    ?>
+</div>

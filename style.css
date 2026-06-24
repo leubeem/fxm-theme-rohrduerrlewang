@@ -69,7 +69,11 @@ body {
 }
 
 .pre-header {
-    @apply max-md:hidden;
+    @apply text-sm md:text-base;
+}
+
+.pre-header .container {
+    @apply max-md:justify-center max-md:gap-x-4;
 }
 
 footer {
@@ -179,7 +183,7 @@ main {
     }
 }
 
-li.menu-item .current-menu-item > a
+.header-menu li.menu-item .current-menu-item > a
 {
     @apply text-white;
 }
@@ -216,9 +220,9 @@ footer .footer-menu li:last-child {
     @apply text-3xl font-bold mt-4 mb-4 py-2 px-2;
 }
 
-/* ema changes */
+/* ema changes — scoped to .header-menu so footer links keep their own colors */
 
-.menu-item-has-children:hover > .sub-menu {
+.header-menu .menu-item-has-children:hover > .sub-menu {
     @apply flex flex-col absolute z-10 p-5;
     background-color: var(--primary-color);
 }
@@ -234,16 +238,16 @@ footer .footer-menu li:last-child {
     @apply shmenu;
 }*/
 
-.menu-item a:hover {
+.header-menu .menu-item a:hover {
     @apply shmenu text-white/[.82];
 }
 
-.menu-item:not(.current-menu-item) a {
+.header-menu .menu-item:not(.current-menu-item) a {
     color: #ffffff80;
 }
 
 /* sub sub menu*/
-.sub-menu li.menu-item-has-children:hover > .sub-menu {
+.header-menu .sub-menu li.menu-item-has-children:hover > .sub-menu {
     @apply flex flex-col absolute z-10 p-5;
     background-color: var(--primary-color);
     right: 100%;
@@ -251,21 +255,55 @@ footer .footer-menu li:last-child {
     width: 100%;
 }
 
-.sub-menu .sub-menu {
+.header-menu .sub-menu .sub-menu {
     display: none;
     position: absolute;
     top: 0;
     left: 90%;
 }
 
-.sub-menu li.menu-item-has-children:hover > .sub-menu > .sub-menu {
+.header-menu .sub-menu li.menu-item-has-children:hover > .sub-menu > .sub-menu {
     display: block;
     top: 0;
     left: 100%;
 }
 
-.menu-item-has-children:hover > a {
+.header-menu .menu-item-has-children:hover > a {
     @apply shmenu;
+}
+
+/* Mobile navigation: tap-to-expand sub-menus (touch devices have no :hover) */
+#mobile-nav .menu-item-has-children {
+    position: relative;
+}
+
+#mobile-nav .submenu-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.75rem;
+    color: var(--primary-color);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+#mobile-nav .submenu-toggle.submenu-toggle-open {
+    transform: rotate(180deg);
+}
+
+#mobile-nav .sub-menu {
+    position: static;
+    padding-left: 1rem;
+}
+
+#mobile-nav .sub-menu.submenu-open {
+    display: block;
 }
 
 /* Unset default prose on images */
@@ -286,4 +324,58 @@ footer .footer-menu li:last-child {
 
 #menu-footer a {
     color: #000;
+}
+
+/* Block/layout helpers (moved out of inline <style> in header.php / footer.php) */
+div.prose {
+    max-width: 100% !important;
+}
+
+.wp-block-spacer {
+    clear: both;
+}
+
+body .is-layout-flex {
+    display: flex;
+}
+
+body .is-layout-flex > * {
+    margin: 0;
+}
+
+.wp-block-columns {
+    align-items: normal !important;
+    box-sizing: border-box;
+}
+
+.wp-block-columns:not(.is-not-stacked-on-mobile) > .wp-block-column {
+    flex-basis: 0;
+    flex-grow: 1;
+}
+
+.wp-block-column {
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.has-text-align-center { text-align: center; }
+.has-text-align-left { text-align: left; }
+.has-text-align-right { text-align: right; }
+
+:where(.wp-block-columns) {
+    margin-bottom: 1.75em;
+}
+
+/* Columns sit side by side on desktop, but stack on mobile (was forced nowrap) */
+@media (min-width: 782px) {
+    .wp-block-columns {
+        flex-wrap: nowrap !important;
+    }
+}
+
+@media (max-width: 781px) {
+    .wp-block-columns:not(.is-not-stacked-on-mobile) > .wp-block-column {
+        flex-basis: 100% !important;
+    }
 }
