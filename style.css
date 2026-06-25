@@ -236,19 +236,31 @@ footer .footer-menu li:last-child {
     @apply shmenu text-white;
 }
 
-/* Default: slightly dimmed white */
+/* Default: dimmed white so the active item clearly stands out against it */
 .header-menu .menu-item > a {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.75);
 }
 
-/* Current page AND its parents/ancestors: full white, so when a sub-page is
-   open you can see which section you are in */
+/* Current page AND its parents/ancestors: bright white + bold so the active
+   section is obvious, even when a sub-page is open */
 .header-menu .current-menu-item > a,
 .header-menu .current-menu-ancestor > a,
 .header-menu .current-menu-parent > a,
 .header-menu .current-page-ancestor > a,
 .header-menu .current-page-parent > a {
     color: #ffffff;
+    font-weight: 700;
+}
+
+/* On desktop add a solid underline bar to the active path */
+@media (min-width: 768px) {
+    .header-menu .current-menu-item > a,
+    .header-menu .current-menu-ancestor > a,
+    .header-menu .current-menu-parent > a,
+    .header-menu .current-page-ancestor > a,
+    .header-menu .current-page-parent > a {
+        box-shadow: inset 0 -3px 0 #ffffff;
+    }
 }
 
 /* sub sub menu */
