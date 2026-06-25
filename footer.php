@@ -21,7 +21,7 @@ if (!empty($columns_content)) :
 
 <?php
 $prefooter_post = get_post(18);
-if ($prefooter_post && $prefooter_post->post_status === 'publish') :
+if ($prefooter_post && !empty($prefooter_post->post_content)) :
     ?>
     <div class="pre-footer">
         <div class="container  mx-auto px-4">

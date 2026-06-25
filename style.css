@@ -224,19 +224,31 @@ footer .footer-menu li:last-child {
     background-color: var(--primary-color);
 }
 
-/* Caret affordance so it is obvious which items open a dropdown */
-#main-nav .menu-item-has-children > a::after {
-    content: " \25BE";
-    font-size: 0.7em;
-    opacity: 0.85;
+/* No caret on the top-level items. From the first sub-level down, mark items
+   that open a flyout sub-menu with a ">" next to the text. */
+#main-nav .sub-menu .menu-item-has-children > a::after {
+    content: " \203A";
+    margin-left: 0.35em;
+    opacity: 0.9;
 }
 
 .header-menu .menu-item a:hover {
     @apply shmenu text-white;
 }
 
-.header-menu .menu-item:not(.current-menu-item) a {
+/* Default: slightly dimmed white */
+.header-menu .menu-item > a {
     color: rgba(255, 255, 255, 0.9);
+}
+
+/* Current page AND its parents/ancestors: full white, so when a sub-page is
+   open you can see which section you are in */
+.header-menu .current-menu-item > a,
+.header-menu .current-menu-ancestor > a,
+.header-menu .current-menu-parent > a,
+.header-menu .current-page-ancestor > a,
+.header-menu .current-page-parent > a {
+    color: #ffffff;
 }
 
 /* sub sub menu */
