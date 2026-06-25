@@ -69,11 +69,7 @@ body {
 }
 
 .pre-header {
-    @apply text-sm md:text-base;
-}
-
-.pre-header .container {
-    @apply max-md:justify-center max-md:gap-x-4;
+    @apply max-md:hidden;
 }
 
 footer {
@@ -209,11 +205,11 @@ main {
 }
 
 footer .footer-menu li {
-    @apply border-r border-gray-500/50 pr-2;
+    @apply pb-1 md:pb-0 md:border-r md:border-gray-500/50 md:pr-2;
 }
 
 footer .footer-menu li:last-child {
-    @apply border-r-0;
+    @apply md:border-r-0;
 }
 
 .page-title {
@@ -222,32 +218,29 @@ footer .footer-menu li:last-child {
 
 /* ema changes — scoped to .header-menu so footer links keep their own colors */
 
-.header-menu .menu-item-has-children:hover > .sub-menu {
+/* Desktop dropdowns: hover-driven, scoped to #main-nav so mobile (tap) is unaffected */
+#main-nav .menu-item-has-children:hover > .sub-menu {
     @apply flex flex-col absolute z-10 p-5;
     background-color: var(--primary-color);
 }
 
-
-/* schon älter
-.sub-menu li.menu-item a:hover {
-    @apply shmenu text-white/[.82];
-}*/
-
-
-/*.menu-item:hover {
-    @apply shmenu;
-}*/
+/* Caret affordance so it is obvious which items open a dropdown */
+#main-nav .menu-item-has-children > a::after {
+    content: " \25BE";
+    font-size: 0.7em;
+    opacity: 0.85;
+}
 
 .header-menu .menu-item a:hover {
-    @apply shmenu text-white/[.82];
+    @apply shmenu text-white;
 }
 
 .header-menu .menu-item:not(.current-menu-item) a {
-    color: #ffffff80;
+    color: rgba(255, 255, 255, 0.9);
 }
 
-/* sub sub menu*/
-.header-menu .sub-menu li.menu-item-has-children:hover > .sub-menu {
+/* sub sub menu */
+#main-nav .sub-menu li.menu-item-has-children:hover > .sub-menu {
     @apply flex flex-col absolute z-10 p-5;
     background-color: var(--primary-color);
     right: 100%;
@@ -255,20 +248,20 @@ footer .footer-menu li:last-child {
     width: 100%;
 }
 
-.header-menu .sub-menu .sub-menu {
+#main-nav .sub-menu .sub-menu {
     display: none;
     position: absolute;
     top: 0;
     left: 90%;
 }
 
-.header-menu .sub-menu li.menu-item-has-children:hover > .sub-menu > .sub-menu {
+#main-nav .sub-menu li.menu-item-has-children:hover > .sub-menu > .sub-menu {
     display: block;
     top: 0;
     left: 100%;
 }
 
-.header-menu .menu-item-has-children:hover > a {
+#main-nav .menu-item-has-children:hover > a {
     @apply shmenu;
 }
 
@@ -286,7 +279,7 @@ footer .footer-menu li:last-child {
     justify-content: center;
     width: 2.5rem;
     height: 2.75rem;
-    color: var(--primary-color);
+    color: #fff;
     background: transparent;
     border: 0;
     cursor: pointer;
@@ -367,15 +360,19 @@ body .is-layout-flex > * {
     margin-bottom: 1.75em;
 }
 
-/* Columns sit side by side on desktop, but stack on mobile (was forced nowrap) */
-@media (min-width: 782px) {
-    .wp-block-columns {
-        flex-wrap: nowrap !important;
-    }
+/* Keep columns side by side everywhere (original behaviour — avoids breaking
+   layouts like the service/events list that rely on columns staying inline) */
+.wp-block-columns {
+    flex-wrap: nowrap !important;
 }
 
+/* ...except the pre-footer (page 18), which is allowed to stack on mobile so
+   it is comfortable to read instead of being crushed into tiny columns */
 @media (max-width: 781px) {
-    .wp-block-columns:not(.is-not-stacked-on-mobile) > .wp-block-column {
+    .pre-footer .wp-block-columns {
+        flex-wrap: wrap !important;
+    }
+    .pre-footer .wp-block-columns > .wp-block-column {
         flex-basis: 100% !important;
     }
 }

@@ -26,7 +26,7 @@ if ($prefooter_post && $prefooter_post->post_status === 'publish') :
     <div class="pre-footer">
         <div class="container  mx-auto px-4">
             <?php
-            echo apply_filters('the_content', $prefooter_post->post_content);
+            echo $prefooter_post->post_content;
             edit_post_link(__('Edit', 'fxwp'), '<p>', '</p>', 18, 'post-edit-link');
             ?>
         </div>

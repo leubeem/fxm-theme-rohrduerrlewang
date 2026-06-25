@@ -9,14 +9,14 @@
 <body <?php body_class(); ?>>
 
 <div class="pre-header" style=background:#ddd;color:#333;padding:5px>
-    <div class="container flex flex-wrap mx-auto items-center " style="gap:14px;align-items:center;">
+    <div class="container flex mx-auto items-center " style="gap:14px;align-items:center;">
 		<a href="/schnellzugriff/">
 		<div style="display:flex;gap:10px;align-items:center;">
 			<img src="/wp-content/uploads/2023/06/Paomedia-Small-N-Flat-Pin.1024-150x150.png" width=23 alt="">
 			Schnellzugriff		</div></a>
 
 
-		<div class="max-md:hidden" style="flex:1">
+		<div style="flex:1">
 
 		</div>
 		<a href="mailto:homepage@rohr-duerrlewang.de" aria-label="E-Mail an homepage@rohr-duerrlewang.de">
@@ -30,10 +30,10 @@
 		 0711 / 74 28 65</div></a>
 
 
-		<form role="search" method="get" class="search-form max-md:hidden" style="display:flex;gap:3px;align-items:center;" action="<?php echo esc_url(home_url('/')); ?>">
+		<form role="search" method="get" class="search-form" style="display:flex;gap:3px;align-items:center;" action="<?php echo esc_url(home_url('/')); ?>">
     <label>
-        <span class="screen-reader-text">Search for:</span>
-        <input type="search" class="search-field" style="padding:4px 10px;border-radius:4px" placeholder="Search…" value="<?php echo get_search_query(); ?>" name="s">
+        <span class="screen-reader-text">Suche nach:</span>
+        <input type="search" class="search-field" style="padding:4px 10px;border-radius:4px" placeholder="Suche" value="<?php echo get_search_query(); ?>" name="s">
     </label>
     <button type="submit" class="search-submit"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24"><path fill="currentColor" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5q0-2.725 1.888-4.612T9.5 3q2.725 0 4.612 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3l-1.4 1.4ZM9.5 14q1.875 0 3.188-1.313T14 9.5q0-1.875-1.313-3.188T9.5 5Q7.625 5 6.312 6.313T5 9.5q0 1.875 1.313 3.188T9.5 14Z"/></svg></button>
 </form>
@@ -111,10 +111,14 @@
         var btn = document.getElementById('menu-button');
         var nav = document.getElementById('mobile-nav');
 
+        var iconMenu = '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 6a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm1 5a1 1 0 100 2h12a1 1 0 100-2H4z" clip-rule="evenodd"></path></svg>';
+        var iconClose = '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>';
+
         if (btn && nav) {
             btn.addEventListener('click', function () {
                 var isHidden = nav.classList.toggle('hidden');
                 btn.setAttribute('aria-expanded', isHidden ? 'false' : 'true');
+                btn.innerHTML = isHidden ? iconMenu : iconClose;
             });
         }
 
